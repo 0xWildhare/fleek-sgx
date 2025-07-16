@@ -1,7 +1,7 @@
 // Adapted from: https://github.com/signalapp/libsignal/
 
 use bitflags::bitflags;
-use zerocopy::{little_endian, IntoBytes, FromBytes};
+use zerocopy::{little_endian, FromBytes, IntoBytes};
 
 // Inline header file references are paths from the root of the repository tree.
 // https://github.com/openenclave/openenclave/tree/v0.17.7

@@ -106,8 +106,8 @@ impl TryFrom<[u8; std::mem::size_of::<SgxQuoteBody>()]> for SgxQuoteBody {
     type Error = Error;
 
     fn try_from(bytes: [u8; std::mem::size_of::<SgxQuoteBody>()]) -> Result<Self> {
-        let quote_body =
-            <Self as zerocopy::FromBytes>::read_from_bytes(&bytes).expect("size was already checked");
+        let quote_body = <Self as zerocopy::FromBytes>::read_from_bytes(&bytes)
+            .expect("size was already checked");
         if quote_body.version.get() != QUOTE_V3 {
             return Err(anyhow!(format!(
                 "unsupported SGX quote version: {}",
