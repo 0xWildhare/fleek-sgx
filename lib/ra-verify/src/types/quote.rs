@@ -4,7 +4,7 @@ use anyhow::{anyhow, bail, Context, Error, Result};
 use p256::ecdsa::Signature;
 use sha2::{Digest, Sha256};
 use x509_cert::certificate::CertificateInner;
-use zerocopy::{little_endian, AsBytes, FromBytes, FromZeroes};
+use zerocopy::{little_endian, FromBytes, IntoBytes};
 
 use super::report::SgxReportBody;
 use super::sgx_x509::SgxPckExtension;
@@ -57,7 +57,7 @@ impl<'a> SgxQuote<'a> {
 
 // https://github.com/openenclave/openenclave/tree/v0.17.7
 // sgx_quote.h
-#[derive(Debug, FromBytes, FromZeroes, AsBytes)]
+#[derive(Debug, FromBytes, IntoBytes, zerocopy::Immutable)]
 #[repr(C)]
 pub struct SgxQuoteBody {
     //    /* (0) */
@@ -107,7 +107,7 @@ impl TryFrom<[u8; std::mem::size_of::<SgxQuoteBody>()]> for SgxQuoteBody {
 
     fn try_from(bytes: [u8; std::mem::size_of::<SgxQuoteBody>()]) -> Result<Self> {
         let quote_body =
-            <Self as zerocopy::FromBytes>::read_from(&bytes).expect("size was already checked");
+            <Self as zerocopy::FromBytes>::read_from_bytes(&bytes).expect("size was already checked");
         if quote_body.version.get() != QUOTE_V3 {
             return Err(anyhow!(format!(
                 "unsupported SGX quote version: {}",
@@ -230,7 +230,7 @@ impl<'a> SgxQuoteSupport<'a> {
     }
 }
 
-#[derive(Debug, zerocopy::FromBytes, zerocopy::FromZeroes)]
+#[derive(Debug, FromBytes, zerocopy::Immutable)]
 #[repr(C)]
 struct SgxEcdsaSignatureHeader {
     signature: [u8; 64],

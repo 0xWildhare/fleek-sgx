@@ -12,11 +12,11 @@ serde = { version = "1.0", features = ["derive"] }
 serde_json = { version = "1.0.125", features = ["raw_value"]}
 hex = { version = "0.4.3", features = ["serde"]}
 chrono = { version = "0.4.38", features = ["serde"] }
-asn1 = "0.17.0"
+asn1 = "0.22.0"
 uuid = "1.10.0"
 
 # IO
-zerocopy = { version = "0.7.34", features = ["derive"] }
+zerocopy = { version = "0.8.26", features = ["derive"] }
 bitflags = "2.3.3"
 
 # Rustcrypto ecosystem

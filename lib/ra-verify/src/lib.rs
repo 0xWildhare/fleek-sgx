@@ -13,7 +13,7 @@ use types::tcb_info::TcbInfo;
 use types::{INTEL_QE_VENDOR_ID, INTEL_ROOT_CA};
 use utils::Expireable;
 use uuid::Uuid;
-use zerocopy::AsBytes;
+use zerocopy::IntoBytes;
 
 use crate::types::sgx_x509::SgxPckExtension;
 use crate::types::tcb_info::{TcbLevel, TcbStatus};

@@ -1,7 +1,7 @@
 // Adapted from: https://github.com/signalapp/libsignal/
 
 use bitflags::bitflags;
-use zerocopy::{little_endian, AsBytes, FromBytes, FromZeroes};
+use zerocopy::{little_endian, IntoBytes, FromBytes};
 
 // Inline header file references are paths from the root of the repository tree.
 // https://github.com/openenclave/openenclave/tree/v0.17.7
@@ -12,7 +12,7 @@ const SGX_HASH_SIZE: usize = 32;
 
 pub type MREnclave = [u8; SGX_HASH_SIZE];
 
-#[derive(Debug, FromBytes, FromZeroes, AsBytes)]
+#[derive(Debug, FromBytes, IntoBytes, zerocopy::Immutable)]
 #[repr(C)]
 // sgx_report_body_t
 pub struct SgxReportBody {

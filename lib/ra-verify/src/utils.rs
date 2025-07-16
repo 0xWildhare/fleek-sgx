@@ -5,7 +5,7 @@ use x509_cert::crl::CertificateList;
 
 pub mod u32_hex {
     use serde::Serializer;
-    use zerocopy::AsBytes;
+    use zerocopy::IntoBytes;
 
     use crate::types::UInt32LE;
 
@@ -128,7 +128,7 @@ impl Expireable for Vec<CertificateInner> {
 ///
 /// Returns `None` and leaves `bytes` unchanged if it isn't long enough.
 pub fn read_from_bytes<T: zerocopy::FromBytes>(bytes: &mut &[u8]) -> Option<T> {
-    let front = T::read_from_prefix(bytes)?;
+    let (front, _) = T::read_from_prefix(bytes).ok()?; // TODO: migrate to new error types
     *bytes = &bytes[std::mem::size_of::<T>()..];
     Some(front)
 }
